@@ -27,7 +27,7 @@ def login():
         
         usuario = Usuario.get_by_nombre(nombre)  # Mayúscula en Usuario
         
-        if usuario and check_password_hash(usuario['contrasena'], contrasena):
+        if usuario and (usuario['contrasena']== contrasena):
             session['id_usuario'] = usuario['id_usuario']
             session['nombre'] = usuario['nombre']
             flash('Inicio de sesión exitoso', 'success')

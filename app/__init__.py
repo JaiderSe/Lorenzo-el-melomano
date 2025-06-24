@@ -13,11 +13,13 @@ def create_app(config_class=Config):
     
     
     # Registrar blueprints
+    from app.controllers.main_controller import main_bp
     from app.controllers.auth_controller import auth_bp
     from app.controllers.album_controller import album_bp
     from app.controllers.artista_controller import artista_bp
     from app.controllers.cancion_controller import cancion_bp
     
+    app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(album_bp)
     app.register_blueprint(artista_bp)
