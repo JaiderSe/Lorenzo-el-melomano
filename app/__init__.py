@@ -10,6 +10,8 @@ def create_app(config_class=Config):
     
     mysql.init_app(app)
     
+    
+    
     # Registrar blueprints
     from app.controllers.auth_controller import auth_bp
     from app.controllers.album_controller import album_bp
