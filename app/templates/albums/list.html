@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Canciones de {{ album.titulo }} - Colección Musical{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('album.listar') }}">Álbumes</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ album.titulo }}</li>
+        </ol>
+    </nav>
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Canciones de <em>{{ album.titulo }}</em></h1>
+        <a href="{{ url_for('cancion.crear', id_album=album.id_album) }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Añadir Canción
+        </a>
+    </div>
+    
+    <!-- Barra de búsqueda -->
+    <form class="mb-4" action="{{ url_for('cancion.buscar', id_album=album.id_album) }}" method="get">
+        <div class="input-group">
+            <input type="text" class="form-control" name="q" placeholder="Buscar canciones..." 
+                   value="{{ query if query else '' }}">
+            <button class="btn btn-primary" type="submit">Buscar</button>
+        </div>
+    </form>
+    
+    <!-- Lista de canciones -->
+    {% if canciones %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Título</th>
+                    <th>Intérprete</th>
+                    <th>Duración</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cancion in canciones %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ cancion.titulo_cancion }}</td>
+                    <td>{{ cancion.interprete }}</td>
+                    <td>{{ cancion.duracion_formateada }}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <a href="{{ url_for('cancion.editar', id_album=album.id_album, id_cancion=cancion.id_cancion) }}" 
+                               class="btn btn-outline-primary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form action="{{ url_for('cancion.eliminar', id_album=album.id_album, id_cancion=cancion.id_cancion) }}" 
+                                  method="post">
+                                <button type="submit" class="btn btn-outline-danger"
+                                        onclick="return confirm('¿Eliminar esta canción?');">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">No hay canciones registradas en este álbum</div>
+    {% endif %}
+</div>
+{% endblock %}
