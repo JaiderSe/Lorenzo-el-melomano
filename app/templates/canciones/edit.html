@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Editar {{ cancion.titulo_cancion }} - Colección Musical{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('album.listar') }}">Álbumes</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('album.detalle', id_album=album.id_album) }}">{{ album.titulo }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Editar Canción</li>
+        </ol>
+    </nav>
+    
+    <h1 class="mb-4">Editar Canción</h1>
+    
+    <form method="post" 
+          action="{{ url_for('cancion.editar', id_album=album.id_album, id_cancion=cancion.id_cancion) }}">
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Título de la Canción</label>
+            <input type="text" class="form-control" id="titulo" name="titulo" 
+                   value="{{ cancion.titulo_cancion }}" required autofocus>
+        </div>
+        
+        <div class="mb-3">
+            <label for="duracion" class="form-label">Duración (MM:SS)</label>
+            <input type="text" class="form-control" id="duracion" name="duracion" 
+                   value="{{ cancion.duracion_form }}" required>
+            <div class="form-text">Ingrese la duración en formato minutos:segundos</div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="interprete" class="form-label">Intérprete</label>
+            <input type="text" class="form-control" id="interprete" name="interprete" 
+                   value="{{ cancion.interprete }}" required>
+        </div>
+        
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{{ url_for('cancion.listar', id_album=album.id_album) }}" 
+               class="btn btn-secondary me-md-2">
+                Cancelar
+            </a>
+            <button type="submit" class="btn btn-primary">Actualizar Canción</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

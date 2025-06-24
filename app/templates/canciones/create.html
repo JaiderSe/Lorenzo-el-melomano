@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lista de Artistas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    
-    {% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block title %}Añadir Canción - Colección Musical{% endblock %}
 
@@ -35,9 +25,20 @@
             <input type="text" class="form-control" id="duracion" name="duracion" 
                    placeholder="Ej: 03:45" required>
             <div class="form-text">Ingrese la duración en formato minutos:segundos</div>
-        </
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        </div>
+        
+        <div class="mb-3">
+            <label for="interprete" class="form-label">Intérprete</label>
+            <input type="text" class="form-control" id="interprete" name="interprete" required>
+        </div>
+        
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{{ url_for('album.detalle', id_album=album.id_album) }}" 
+               class="btn btn-secondary me-md-2">
+                Cancelar
+            </a>
+            <button type="submit" class="btn btn-primary">Guardar Canción</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
