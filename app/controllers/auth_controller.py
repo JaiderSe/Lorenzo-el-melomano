@@ -13,9 +13,7 @@ def registro():
         if Usuario.get_by_nombre(nombre):
             flash('El nombre de usuario ya existe', 'danger')
             return redirect(url_for('auth.registro'))
-        
-        hashed_password = generate_password_hash(contrasena)
-        Usuario.create(nombre, hashed_password)
+        Usuario.create(nombre, contrasena)
         flash('Registro exitoso. Por favor inicia sesión.', 'success')
         return redirect(url_for('auth.login'))
     
@@ -27,16 +25,17 @@ def login():
         nombre = request.form['nombre']
         contrasena = request.form['contrasena']
         
-        usuario = Usuario.get_by_nombre(nombre)
+        usuario = Usuario.get_by_nombre(nombre)  # Mayúscula en Usuario
+        
         if usuario and check_password_hash(usuario['contrasena'], contrasena):
             session['id_usuario'] = usuario['id_usuario']
             session['nombre'] = usuario['nombre']
             flash('Inicio de sesión exitoso', 'success')
             return redirect(url_for('album.listar'))
-        
-        flash('Nombre de usuario o contraseña incorrectos', 'danger')
+        else:
+            flash('Nombre de usuario o contraseña incorrectos', 'danger')
     
-    return render_template('auth/login.html')
+    return render_template('auth/login.html')  # Fuera del if POST
 
 @auth_bp.route('/logout')
 def logout():

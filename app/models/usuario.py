@@ -1,13 +1,16 @@
 from app.database.db_connection import get_db_connection
+from werkzeug.security import generate_password_hash
 
 class Usuario:
     @staticmethod
-    def create(nombre, contrasena):
+    def create(nombre, contrasena, metodo_hashing='pbkdf2:sha256'):
+        """Crea un nuevo usuario asegurando el método de hashing"""
         conn = get_db_connection()
         cursor = conn.cursor()
+        hashed_pw = generate_password_hash(contrasena, method=metodo_hashing)
         cursor.execute(
             "INSERT INTO usuarios (nombre, contrasena) VALUES (%s, %s)",
-            (nombre, contrasena)
+            (nombre, hashed_pw)
         )
         conn.commit()
         return cursor.lastrowid

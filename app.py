@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,request, redirect
 import mysql.connector
 
 app = Flask(__name__)
@@ -19,7 +19,7 @@ def inicio():
     resultados = cursor.fetchall()
     cursor.close()
     conexion.close()
-    return render_template('index.html', datos=resultados)
+    return render_template('register.html', datos=resultados)
 
 @app.route('/registrar', methods=['POST'])
 def registrar():
