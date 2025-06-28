@@ -59,6 +59,8 @@ coleccion_musical/
 3. Inicia la aplicación:
     ```bash
     npm start
+
+    
     ```
 
 ## Licencia
