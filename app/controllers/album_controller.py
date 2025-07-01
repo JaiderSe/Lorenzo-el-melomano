@@ -4,13 +4,17 @@ from app.models.artista import Artista
 from app.models.cancion import Cancion
 from app.utils.decorators import login_required
 
-album_bp = Blueprint('album', __name__)
+album_bp = Blueprint('album', __name__, url_prefix='/albums')
 
 @album_bp.route('/')
 @login_required
 def listar():
-    id_usuario = session['id_usuario']
+    id_usuario = session.get('id_usuario')
+    if not id_usuario:
+        flash('Usuario no autenticado', 'danger')
+        return redirect(url_for('auth.login'))
     albums = Album.get_by_user(id_usuario)
+    print(albums)
     return render_template('albums/list.html', albums=albums)
 
 @album_bp.route('/<int:id_album>')
@@ -28,6 +32,7 @@ def detalle(id_album):
 @album_bp.route('/crear', methods=['GET', 'POST'])
 @login_required
 def crear():
+    
     if request.method == 'POST':
         titulo = request.form['titulo']
         ano_produccion = request.form['ano_produccion']

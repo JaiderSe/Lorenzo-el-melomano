@@ -14,19 +14,53 @@
 ```
 coleccion_musical/
 │
-├── app/                  # Código principal de la aplicación
-│   ├── __init__.py       # Inicialización de la app Flask
-│   ├── config.py         # Configuración de la aplicación
-│   ├── database/         # Conexión y gestión de la base de datos
-│   ├── models/           # Definición de modelos de datos MVC
-│   ├── controllers/      # Lógica de negocio y rutas
-│   ├── static/           # Archivos estáticos (CSS, JS, imágenes)
-│   ├── templates/        # Plantillas HTML 
-│   └── utils/            # Funciones auxiliares y decoradores
+├── app/
+│   ├── __init__.py
+│   ├── config.py
+│   ├── database/
+│   │   ├── __init__.py
+│   │   └── db_connection.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── usuario.py
+│   │   ├── album.py
+│   │   ├── artista.py
+│   │   └── cancion.py
+│   ├── controllers/
+│   │   ├── __init__.py
+│   │   ├── auth_controller.py
+│   │   ├── album_controller.py
+│   │   ├── artista_controller.py
+│   │   └── cancion_controller.py
+│   ├── static/
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── images/
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── auth/
+│   │   │   ├── login.html
+│   │   │   └── register.html
+│   │   ├── albums/
+│   │   │   ├── list.html
+│   │   │   ├── detail.html
+│   │   │   ├── create.html
+│   │   │   └── edit.html
+│   │   ├── artistas/
+│   │   │   ├── list.html
+│   │   │   └── detail.html
+│   │   └── canciones/
+│   │       ├── list.html
+│   │       ├── create.html
+│   │       └── edit.html
+│   └── utils/
+│       ├── __init__.py
+│       ├── decorators.py
+│       └── helpers.py
 │
-├── requirements.txt      # Dependencias del proyecto
-├── run.py                # Script de arranque de la aplicación
-└── README.md             # Documentación principal
+├── requirements.txt
+├── run.py
+└── README.md
 ```
 
 

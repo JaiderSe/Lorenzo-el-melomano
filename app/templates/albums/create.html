@@ -1,85 +1,51 @@
+<!-- app/templates/albums/create.html -->
 {% extends "base.html" %}
-
-{% block title %}Nuevo Álbum - Colección Musical{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ url_for('album.listar') }}">Álbums</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Nuevo Álbum</li>
-        </ol>
-    </nav>
-
-    <h1 class="mb-4">Crear Nuevo Álbum</h1>
-
-    <form method="POST" action="{{ url_for('album.crear') }}">
-        <div class="mb-3">
-            <label for="titulo" class="form-label">Título</label>
+    <h2>Crear Nuevo Álbum</h2>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <form method="POST" action="{{ url_for('album.create_album') }}">
+        <div class="form-group">
+            <label for="titulo">Título</label>
             <input type="text" class="form-control" id="titulo" name="titulo" required>
         </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="ano_produccion" class="form-label">Año de producción</label>
-                <input type="number" class="form-control" id="ano_produccion" name="ano_produccion" 
-                       min="1900" max="{{ current_year }}" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="medio" class="form-label">Medio</label>
-                <select class="form-select" id="medio" name="medio" required>
-                    <option value="" selected disabled>Seleccionar...</option>
-                    <option value="CD">CD</option>
-                    <option value="Vinilo">Vinilo</option>
-                    <option value="Casete">Casete</option>
-                    <option value="Digital">Digital</option>
-                    <option value="Streaming">Streaming</option>
-                </select>
-            </div>
+        
+        <div class="form-group">
+            <label for="ano_produccion">Año de Producción</label>
+            <input type="number" class="form-control" id="ano_produccion" name="ano_produccion" min="1900" max="2100">
         </div>
-
-        <div class="mb-3">
-            <label for="descripcion" class="form-label">Descripción</label>
+        
+        <div class="form-group">
+            <label for="descripcion">Descripción</label>
             <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
         </div>
-
-        <!-- Sección para artistas (opcional) -->
-        <div class="mb-4">
-            <label class="form-label">Artistas</label>
-            <div id="artistas-container">
-                <!-- Los artistas se pueden añadir dinámicamente con JavaScript -->
-            </div>
-            <button type="button" class="btn btn-sm btn-outline-secondary mt-2" 
-                    onclick="agregarArtista()">
-                <i class="bi bi-plus"></i> Añadir Artista
-            </button>
+        
+        <div class="form-group">
+            <label for="medio">Medio</label>
+            <select class="form-control" id="medio" name="medio" required>
+                <option value="">Seleccionar medio</option>
+                <option value="Vinilo">Vinilo</option>
+                <option value="CD">CD</option>
+                <option value="Casete">Casete</option>
+                <option value="Digital">Digital</option>
+            </select>
         </div>
-
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <a href="{{ url_for('album.listar') }}" class="btn btn-secondary me-md-2">Cancelar</a>
-            <button type="submit" class="btn btn-primary">Guardar Álbum</button>
-        </div>
+        
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Guardar
+        </button>
+        <a href="{{ url_for('album.list_albums') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Cancelar
+        </a>
     </form>
 </div>
-
-<!-- Script para manejar artistas dinámicos -->
-<script>
-function agregarArtista() {
-    const container = document.getElementById('artistas-container');
-    const nuevoArtista = document.createElement('div');
-    nuevoArtista.className = 'input-group mb-2';
-    nuevoArtista.innerHTML = `
-        <select class="form-select" name="artistas">
-            <option value="" selected disabled>Seleccionar artista...</option>
-            {% for artista in todos_artistas %}
-            <option value="{{ artista.id_artista }}">{{ artista.nombre_artista }}</option>
-            {% endfor %}
-        </select>
-        <button type="button" class="btn btn-outline-danger" onclick="this.parentNode.remove()">
-            <i class="bi bi-trash"></i>
-        </button>
-    `;
-    container.appendChild(nuevoArtista);
-}
-</script>
 {% endblock %}

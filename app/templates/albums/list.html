@@ -1,59 +1,52 @@
+<!-- app/templates/albums/list.html -->
 {% extends "base.html" %}
-
-{% block title %}Mis Álbums - Colección Musical{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Mis Álbums</h1>
-        <a href="{{ url_for('album.crear') }}" class="btn btn-success">
-            <i class="bi bi-plus-circle"></i> Nuevo Álbum
-        </a>
-    </div>
-
-    <!-- Barra de búsqueda -->
-    <form class="mb-4" method="GET" action="{{ url_for('album.listar') }}">
-        <div class="input-group">
-            <input type="text" class="form-control" name="q" placeholder="Buscar álbums..." 
-                   value="{{ request.args.get('q', '') }}">
-            <button class="btn btn-primary" type="submit">Buscar</button>
-        </div>
-    </form>
-
-    <!-- Listado de álbums -->
-    {% if albums %}
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <h2>Mis Álbumes</h2>
+    <a href="{{ url_for('album.create_album') }}" class="btn btn-primary mb-3">
+        <i class="fas fa-plus"></i> Nuevo Álbum
+    </a>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <div class="row">
         {% for album in albums %}
-        <div class="col">
-            <div class="card h-100">
+        <div class="col-md-4 mb-4">
+            <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{ album.titulo }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">
-                        {{ album.ano_produccion }} • {{ album.medio }}
-                    </h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ album.ano_produccion }}</h6>
                     <p class="card-text">{{ album.descripcion|truncate(100) }}</p>
-                </div>
-                <div class="card-footer bg-transparent">
-                    <a href="{{ url_for('album.detalle', id_album=album.id_album) }}" 
-                       class="btn btn-sm btn-primary">Ver</a>
-                    <a href="{{ url_for('album.editar', id_album=album.id_album) }}" 
-                       class="btn btn-sm btn-secondary">Editar</a>
-                    <form class="d-inline" action="{{ url_for('album.eliminar', id_album=album.id_album) }}" 
-                          method="POST">
-                        <button type="submit" class="btn btn-sm btn-danger"
-                                onclick="return confirm('¿Eliminar este álbum?')">
-                            Eliminar
+                    <p class="card-text"><small class="text-muted">{{ album.medio }}</small></p>
+                    {% if album.artistas %}
+                    <p class="card-text"><small>Artistas: {{ album.artistas }}</small></p>
+                    {% endif %}
+                    <a href="{{ url_for('album.detail_album', album_id=album.id_album) }}" class="btn btn-sm btn-info">
+                        <i class="fas fa-eye"></i> Ver
+                    </a>
+                    <a href="{{ url_for('album.edit_album', album_id=album.id_album) }}" class="btn btn-sm btn-warning">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <form method="POST" action="{{ url_for('album.delete_album', album_id=album.id_album) }}" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar este álbum?')">
+                            <i class="fas fa-trash"></i> Eliminar
                         </button>
                     </form>
                 </div>
             </div>
         </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">No tienes álbumes registrados aún.</div>
+        </div>
         {% endfor %}
     </div>
-    {% else %}
-    <div class="alert alert-info">
-        No tienes álbums registrados. <a href="{{ url_for('album.crear') }}">Crea tu primer álbum</a>.
-    </div>
-    {% endif %}
 </div>
 {% endblock %}

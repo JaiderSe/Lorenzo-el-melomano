@@ -1,4 +1,5 @@
 from app.database.db_connection import get_db_connection
+from MySQLdb.cursors import DictCursor
 
 class Cancion:
     @staticmethod
@@ -23,7 +24,7 @@ class Cancion:
         Obtiene una canción por su ID
         """
         conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor(DictCursor)
         cursor.execute("SELECT * FROM canciones WHERE id_cancion = %s", (id_cancion,))
         return cursor.fetchone()
 
@@ -33,7 +34,7 @@ class Cancion:
         Obtiene todas las canciones de un álbum
         """
         conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor(DictCursor)
         cursor.execute("""
             SELECT * FROM canciones 
             WHERE id_album = %s 
@@ -47,7 +48,7 @@ class Cancion:
         Busca canciones por título (búsqueda parcial)
         """
         conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor(DictCursor)
         cursor.execute(
             "SELECT * FROM canciones WHERE titulo_cancion LIKE %s",
             (f"%{titulo}%",)

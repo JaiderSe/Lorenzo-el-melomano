@@ -1,4 +1,5 @@
 from app.database.db_connection import get_db_connection
+from MySQLdb.cursors import DictCursor
 
 class Artista:
     @staticmethod
@@ -21,7 +22,7 @@ class Artista:
         Obtiene un artista por su ID
         """
         conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor(DictCursor)
         cursor.execute("SELECT * FROM artistas WHERE id_artista = %s", (id_artista,))
         return cursor.fetchone()
 
@@ -31,7 +32,7 @@ class Artista:
         Busca artistas por nombre (búsqueda parcial)
         """
         conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor(DictCursor)
         cursor.execute(
             "SELECT * FROM artistas WHERE nombre_artista LIKE %s",
             (f"%{nombre_artista}%",)
@@ -44,7 +45,7 @@ class Artista:
         Obtiene todos los artistas asociados a un álbum
         """
         conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor(DictCursor)
         cursor.execute("""
             SELECT ar.* 
             FROM artistas ar
@@ -59,7 +60,7 @@ class Artista:
         Obtiene todos los artistas ordenados por nombre
         """
         conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor(DictCursor)
         cursor.execute("SELECT * FROM artistas ORDER BY nombre_artista")
         return cursor.fetchall()
 
@@ -85,3 +86,4 @@ class Artista:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM artistas WHERE id_artista = %s", (id_artista,))
         conn.commit()
+        
